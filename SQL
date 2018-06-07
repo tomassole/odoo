@@ -1,1 +1,28 @@
 -- Listado de SQL Utilizados en ODOO
+
+-- Actualizar lineas de mandatos en facturas de clientes.
+    update account_invoice set mandate_id=(select id from account_banking_mandate 
+                                              where partner_id=account_invoice.commercial_partner_id and 
+                                              state = 'valid' and 
+                                              company_id=account_invoice.company_id limit 1) 
+        where mandate_id is null and state='draft';
+        
+        
+-- Actualizar la company_id del contacto(res_partner) utilizando una presupuesto-pedido
+-- primero los padres y luegos los hijos.
+    update res_partner set company_id = 1 where id in (select partner_id from sale_order where company_id = 1);
+    update res_partner set company_id = 2 where id in (select partner_id from sale_order where company_id = 2);
+    update res_partner set company_id = 3 where id in (select partner_id from sale_order where company_id = 3);
+    update res_partner set company_id = 4 where id in (select partner_id from sale_order where company_id = 4);
+
+    update res_partner set company_id = 1 where parent_id in (select partner_id from sale_order where company_id = 1) ;
+    update res_partner set company_id = 2 where parent_id in (select partner_id from sale_order where company_id = 2) ;
+    update res_partner set company_id = 3 where parent_id in (select partner_id from sale_order where company_id = 3) ;
+    update res_partner set company_id = 4 where parent_id in (select partner_id from sale_order where company_id = 4) ;
+    
+-- Consular/Eliminar los jobs
+    select * from queue_job;
+    delete from queue_job where name like 'Import Invoice Line from file ABRIL PR - lineas.csv -%' and state = 'failed';
+
+-- Identificar el id de factura desde una linea de factura
+    select invoice_id from account_invoice_line where id = 209979
