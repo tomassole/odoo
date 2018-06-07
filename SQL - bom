@@ -1,0 +1,141 @@
+-- LISTADO DE SQL PARA ARREGLAR LAS UNIDADES CUANDO ESTAN DUPLICADAS O MAL DEFINIDADS REEMPLAZANDO LA CORRECTA.
+
+
+select product_id, bom_id  from mrp_bom_line
+	group by product_id, bom_id
+	order by product_id;
+
+	select * from mrp_bom_line
+
+UPDATE mrp_bom_line 
+	SET  bom_id = 69
+	WHERE bom_id IN (67, 70,253,254,255,256,246,247,248,259) ;
+
+
+UPDATE mrp_bom_line 
+	SET  bom_id = 208
+	WHERE bom_id IN (293,207,310,355,311,312,203,204,205,206);
+
+UPDATE mrp_bom_line 
+	SET  bom_id = 115
+	WHERE bom_id IN (178,216,121,179,180,188,189)
+
+
+UPDATE mrp_bom_line 
+	SET  bom_id = 127
+	WHERE bom_id IN (81,84,85)
+
+UPDATE mrp_bom_line 
+	SET  bom_id = 146
+	WHERE bom_id IN (37,96,105,120,122,224,228,229,231,232,233,243,268,270,271,273,288,299)
+update product_template 
+	set uom_id = 146 
+	WHERE uom_id IN (37,96,105,120,122,224,228,229,231,232,233,243,268,270,271,273,288,299);	
+update product_template 
+	set uom_po_id = 146
+	WHERE uom_po_id IN (37,96,105,120,122,224,228,229,231,232,233,243,268,270,271,273,288,299);	
+UPDATE	purchase_order_line	
+	SET  product_uom = 146
+	WHERE product_uom IN (37,96,105,120,122,224,228,229,231,232,233,243,268,270,271,273,288,299);	
+UPDATE stock_move
+	SET  product_uom = 146
+	WHERE product_uom IN (37,96,105,120,122,224,228,229,231,232,233,243,268,270,271,273,288,299);	
+
+	
+-- 
+UPDATE mrp_bom_line 
+	SET  bom_id = 4
+	WHERE bom_id IN (3,23,55,59,60,61,63,64,76,118,124,125,126,135,136,137,140,142,143,144,145,149,150,151,152,153,154,
+	155,156,157,158,159,160,161,163,164,165,166,167,169,170,171,172,173,174,175,177,182,183,184,185,186,187,190,191,192,
+	193,194,195,200,201,202,213,214,217,218,221,222,223,240,241,244,316,317,325,326,335)
+update product_template 
+	set uom_id = 4 
+	WHERE uom_id IN (3,23,55,59,60,61,63,64,76,118,124,125,126,135,136,137,140,142,143,144,145,149,150,151,152,153,154,
+	155,156,157,158,159,160,161,163,164,165,166,167,169,170,171,172,173,174,175,177,182,183,184,185,186,187,190,191,192,
+	193,194,195,200,201,202,213,214,217,218,221,222,223,240,241,244,316,317,325,326,335)
+update product_template 
+	set uom_po_id = 4 
+	WHERE uom_po_id IN (3,23,55,59,60,61,63,64,76,118,124,125,126,135,136,137,140,142,143,144,145,149,150,151,152,153,154,
+	155,156,157,158,159,160,161,163,164,165,166,167,169,170,171,172,173,174,175,177,182,183,184,185,186,187,190,191,192,
+	193,194,195,200,201,202,213,214,217,218,221,222,223,240,241,244,316,317,325,326,335)
+UPDATE	purchase_order_line	
+	SET  product_uom = 4
+	WHERE product_uom IN (3,23,55,59,60,61,63,64,76,118,124,125,126,135,136,137,140,142,143,144,145,149,150,151,152,153,154,
+	155,156,157,158,159,160,161,163,164,165,166,167,169,170,171,172,173,174,175,177,182,183,184,185,186,187,190,191,192,
+	193,194,195,200,201,202,213,214,217,218,221,222,223,240,241,244,316,317,325,326,335)
+UPDATE stock_move
+	SET  product_uom = 4
+	WHERE product_uom IN (3,23,55,59,60,61,63,64,76,118,124,125,126,135,136,137,140,142,143,144,145,149,150,151,152,153,154,
+	155,156,157,158,159,160,161,163,164,165,166,167,169,170,171,172,173,174,175,177,182,183,184,185,186,187,190,191,192,
+	193,194,195,200,201,202,213,214,217,218,221,222,223,240,241,244,316,317,325,326,335)
+DELETE FROM product_uom WHERE ID IN (3,23,55,59,60,61,63,64,76,118,124,125,126,135,136,137,140,142,143,144,145,149,150,151,152,153,154,
+	155,156,157,158,159,160,161,163,164,165,166,167,169,170,171,172,173,174,175,177,182,183,184,185,186,187,190,191,192,
+	193,194,195,200,201,202,213,214,217,218,221,222,223,240,241,244,316,317,325,326,335)
+
+
+SELECT * FROM purchase_order_line LIMIT 20
+
+SELECT * FROM product_uom LIMIT 20
+DELETE FROM product_uom WHERE ID IN (3,23,55,59,60,61,63,64,76,118,124,125,126,135,136,137,140,142,143,144,145,149,150,151,152,153,154,
+	155,156,157,158,159,160,161,163,164,165,166,167,169,170,171,172,173,174,175,177,182,183,184,185,186,187,190,191,192,
+	193,194,195,200,201,202,213,214,217,218,221,222,223,240,241,244,316,317,325,326,335)
+
+	
+
+UPDATE mrp_bom_line 
+	SET  bom_id = 54
+	WHERE bom_id = 4	
+
+SELECT * FROM product_product where id = 182;
+select * from product_template where id = 243;
+update product_template set uom_id = 54 where id = 243;
+
+-- lista de materiales
+UPDATE mrp_bom_line 
+	SET  bom_id = 127
+	WHERE bom_id IN(81,84,85)
+	
+update product_template 
+	set uom_id = 127
+	WHERE uom_id IN (81,84,85)
+
+update product_template 
+	set uom_po_id = 127
+	WHERE uom_po_id IN (81,84,85)
+
+-- lista de pedidos
+UPDATE	purchase_order_line	
+	SET  product_uom = 127
+	WHERE product_uom IN (81,84,85)
+
+-- movimiento de stock
+UPDATE stock_move
+	SET  product_uom = 127
+	WHERE product_uom IN (81,84,85)
+
+DELETE FROM product_uom WHERE ID IN (81,84,85)
+
+
+----------
+UPDATE mrp_bom_line 
+	SET  bom_id = 4
+	WHERE bom_id IN ()
+update product_template 
+	set uom_id = 4 
+	WHERE uom_id IN ()
+
+update product_template 
+	set uom_po_id = 4 
+	WHERE uom_po_id IN IN ()
+
+UPDATE	purchase_order_line	
+	SET  product_uom = 4
+	WHERE product_uom IN IN ()
+
+UPDATE stock_move
+	SET  product_uom = 4
+	WHERE product_uom IN IN ()
+
+DELETE FROM product_uom WHERE ID IN IN ()
+
+
