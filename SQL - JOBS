@@ -1,0 +1,7 @@
+
+-- select * from queue_job;
+
+delete from queue_job 
+    where name like 'Import Invoice Line from file ABRIL PR - lineas.csv -%' 
+          and state = 'failed';
+
