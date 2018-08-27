@@ -1,0 +1,5 @@
+ <favourite title="sql mandatos">
+update account_invoice set mandate_id=(select id from account_banking_mandate 
+                                            where partner_id=account_invoice.commercial_partner_id and state = 'valid' and 
+                                            company_id=account_invoice.company_id limit 1) 
+    where mandate_id is null and state='draft';</favourite>
