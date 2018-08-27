@@ -1,0 +1,12 @@
+-- SCRIPT DE BORRADO DE DUPLICADOS DE UNIDADES DE MEDIDA&#13;
+SELECT * FROM product_uom WHERE active=false order by name	&#13;
+&#13;
+DELETE FROM product_uom WHERE ID IN (364);&#13;
+UPDATE &quot;purchase_order_line&quot; SET &quot;product_uom&quot; = 1 WHERE &quot;product_uom&quot; IN (364);&#13;
+UPDATE &quot;mrp_bom&quot; SET &quot;product_uom_id&quot; = 1 WHERE &quot;product_uom_id&quot; IN  (364);&#13;
+UPDATE &quot;product_template&quot; SET &quot;uom_id&quot; = 1 WHERE &quot;uom_id&quot; IN  (364);&#13;
+UPDATE &quot;product_template&quot; SET &quot;uom_po_id&quot; = 1 WHERE &quot;uom_po_id&quot; IN  (364);&#13;
+UPDATE &quot;stock_move&quot; SET &quot;product_uom&quot; = 1 WHERE &quot;product_uom&quot; IN  (364);&#13;
+UPDATE &quot;sale_order_line&quot; SET &quot;product_uom&quot; = 1 WHERE &quot;product_uom&quot; IN  (364);&#13;
+&#13;
+-- FINAL SCRIPT DE BORRADO DE DUPLICADOS DE UNIDADES DE MEDIDA.&#13;
