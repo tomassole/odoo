@@ -1,0 +1,25 @@
+CREATE or REPLACE FUNCTION tsm_del_dupli_product(product_id_ok INTEGER, product_id_del INTEGER)
+RETURNS INTEGER AS $i_rtn$
+DECLARE
+i_rtn integer;
+-- AUTOR: TOMAS A. SOLE MORA
+-- FECHA: 17/08/2018
+-- NOTA: SCRIPT DE BORRADO DE DUPLICADOS DE ARTICULOS
+--
+-- PARAMETROS: IN product_id_ok (INTEGER), IN product_id_del (INTEGER)
+--
+-- EJECUTAR:  select * from tsm_del_dupli_product(14,1019);
+-- 
+BEGIN
+
+UPDATE &quot;account_invoice_line&quot; SET product_id = (SELECT ID FROM product_product WHERE product_tmpl_id IN (product_id_ok) LIMIT 1) WHERE product_id IN (SELECT ID FROM product_product WHERE product_tmpl_id IN (product_id_del));
+UPDATE &quot;purchase_order_line&quot; SET &quot;product_id&quot; = (SELECT ID FROM product_product WHERE product_tmpl_id IN (product_id_ok) LIMIT 1) WHERE product_id IN (SELECT ID FROM product_product WHERE product_tmpl_id IN (product_id_del));
+UPDATE &quot;mrp_bom_line&quot; SET &quot;product_id&quot; = (SELECT ID FROM product_product WHERE product_tmpl_id IN (product_id_ok) LIMIT 1) WHERE product_id IN (SELECT ID FROM product_product WHERE product_tmpl_id IN (product_id_del)) ;
+UPDATE &quot;mrp_bom&quot; SET &quot;product_tmpl_id&quot; = product_id_ok WHERE product_tmpl_id IN (product_id_del) ;
+
+DELETE FROM product_product WHERE product_tmpl_id IN (product_id_del);
+DELETE FROM product_template WHERE ID IN (product_id_del);
+RETURN i_rtn;
+END;
+$i_rtn$ LANGUAGE plpgsql;
+
