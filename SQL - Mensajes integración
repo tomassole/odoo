@@ -1,0 +1,4 @@
+-- donde X sea el is de la integración para la que quieres obtener los mensajes
+select body,message_type from mail_message 
+             where model = 'scat.school.ise.integration' 
+                   and res_id = X; 
