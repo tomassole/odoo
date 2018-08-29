@@ -2,3 +2,11 @@
 select body,message_type from mail_message 
              where model = 'scat.school.ise.integration' 
                    and res_id = X; 
+
+
+-- Segunda opcion listado global
+select t2.id, t2.create_date,t2.operation, t1.body,t1.message_type 
+	from mail_message as t1,
+		scat_school_ise_integration as t2
+             where t1.res_id = t2.id 
+		   and model = 'scat.school.ise.integration'
