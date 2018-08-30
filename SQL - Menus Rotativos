@@ -1,0 +1,8 @@
+select t2.name,t1.name, t1.mode,t1.sequence, t1.product_qty, t1.product_id 
+	from scat_menu_config_line as t1,
+	    scat_menu_config as t2
+	    where t1.menu_config_id = t2.id
+	    order by t2.name, t1.mode 
+
+-- select * from scat_menu_config_line 
+-- select * from scat_menu_config
