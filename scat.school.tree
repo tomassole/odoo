@@ -1,0 +1,12 @@
+NOMBRE VISTA: scat.school.tree
+ID EXTERNO: scat_school_management.scat_school_tree_view
+
+<?xml version="1.0"?>
+<tree string="scat_school Type Tree">
+                    <field name="name" string="Nombre"/>
+                    <field name="code"/>
+                    <field name="notes"/>
+                    <field name="state_id"/>
+                    <field name="analytic_account_id"/>
+                </tree>
+            
