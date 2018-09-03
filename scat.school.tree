@@ -7,6 +7,6 @@ ID EXTERNO: scat_school_management.scat_school_tree_view
                     <field name="code"/>
                     <field name="notes"/>
                     <field name="state_id"/>
+                    <field name="rotative_menu_ids"/>
                     <field name="analytic_account_id"/>
                 </tree>
-            
