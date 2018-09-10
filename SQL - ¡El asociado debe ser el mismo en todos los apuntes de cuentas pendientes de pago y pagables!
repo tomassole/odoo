@@ -1,0 +1,9 @@
+select apl.* 
+  from account_payment_line apl inner join account_move_line aml on aml.id = apl.move_line_id 
+  where apl.partner_id != aml.partner_id and 
+  order_id = 517;
+  
+  
+El 517 es el id de esta órden de cobro y el motivo del fallo es que la empresa del asiento contable de la factura 
+y la empresa de la linea de cobro no es la misma, ya pasó varias veces y es por cambiar la cuenta a mano en la propia linea 
+de la orden de cobro, lo que hay que hacer en ese caso es eliminar la linea, corregir la factura y luego volver a remesarla.
