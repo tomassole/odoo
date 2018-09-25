@@ -55,16 +55,19 @@
                             </t>
                         </div>
                         <div style="position:absolute; top:217mm; left:36mm">
-                            <div style="position:absolute; top:24mm; left:60mm;width: 100mm;height: 5mm;">
-                                <span t-field="o.partner_id.name"/>
+                            <div style="position:absolute; top:06mm; left:25mm; width: 100mm;height: 5mm;">
+                                <span t-field="o.payment_date"/>
                             </div>
-                            <div style="position:absolute; top:19mm; left:115mm;width: 100mm;height: 5mm;">
+                            <div style="position:absolute; top:06mm; left:125mm;width: 100mm;height: 5mm;">
                                 <span t-esc="'#%.2f#' % (o.amount) "/>
                             </div>
-                            <div style="position:absolute; top:29mm; left:60mm; width: 100mm;height: 10mm;">
+                            <div style="position:absolute; top:16mm; left:15mm;width: 100mm;height: 5mm;">
+                                <span t-field="o.partner_id.name"/>
+                            </div>
+                            <div style="position:absolute; top:15mm; left:60mm; width: 100mm;height: 10mm;">
                                 <span t-esc="o.check_amount_in_words"/>
                             </div>
-                            <div style="position:absolute; top:39mm; left:65mm; width: 100mm;height: 5mm;">
+                            <div style="position:absolute; top:28mm; left:55mm; width: 100mm;height: 5mm;">
                                 <span t-field="o.payment_date"/>
                             </div>
                         </div>
