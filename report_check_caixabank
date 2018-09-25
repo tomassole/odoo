@@ -12,8 +12,8 @@
                         <div style="position:absolute; top:100mm; left:10mm;">
                             <strong>
                                 <span t-esc="'Partner: {}'.format(o.partner_id.name)"/>
-                                <span style="padding-right:100mm;float:right;" t-esc="'Date: {}'.format(o.payment_date)"/>
-                                <span style="position:absolute; right:35mm;" t-esc="'Check #: {}'.format(o.check_number)"/>
+                                <span style="padding-right:130mm;float:right;" t-esc="'Fecha: {}'.format(datetime.datetime.now())"/>
+                                <span style="position:absolute; right:35mm;" t-esc="'Nº Cheque: {}'.format(o.check_number)"/>
                             </strong>
                             <t>
                                 <table width="96%" style="padding-right:22mm;">
@@ -55,8 +55,14 @@
                             </t>
                         </div>
                         <div style="position:absolute; top:217mm; left:36mm">
-                            <div style="position:absolute; top:06mm; left:25mm; width: 100mm;height: 5mm;">
-                                <span t-field="o.payment_date"/>
+                            <div style="position:absolute; top:06mm; left:32mm; width: 100mm;height: 5mm;">
+                                <span t-field="o.payment_date"  t-field-options='{"format": "dd"}'/>
+                            </div>
+                            <div style="position:absolute; top:06mm; left:50mm; width: 100mm;height: 5mm;">
+                                <span t-field="o.payment_date"  t-field-options='{"format": "MMMM"}'/>
+                            </div>
+                            <div style="position:absolute; top:06mm; left:80mm; width: 100mm;height: 5mm;">
+                                <span t-field="o.payment_date"  t-field-options='{"format": "YYYY"}'/>
                             </div>
                             <div style="position:absolute; top:06mm; left:125mm;width: 100mm;height: 5mm;">
                                 <span t-esc="'#%.2f#' % (o.amount) "/>
@@ -67,8 +73,14 @@
                             <div style="position:absolute; top:15mm; left:60mm; width: 100mm;height: 10mm;">
                                 <span t-esc="o.check_amount_in_words"/>
                             </div>
-                            <div style="position:absolute; top:28mm; left:55mm; width: 100mm;height: 5mm;">
-                                <span t-field="o.payment_date"/>
+                            <div style="position:absolute; top:28mm; left:100mm; width: 30mm;height: 5mm;">
+                                <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d')"/>
+                            </div>
+                            <div style="position:absolute; top:28mm; left:120mm; width: 40mm;height: 5mm;">
+                                <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%B')"/>
+                            </div>
+                            <div style="position:absolute; top:28mm; left:150mm; width: 20mm;height: 5mm;">
+                                <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y')"/>
                             </div>
                         </div>
                     </div>
