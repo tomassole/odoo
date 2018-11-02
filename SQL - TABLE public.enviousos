@@ -1,0 +1,19 @@
+-- Table: public.enviousos
+
+-- DROP TABLE public.enviousos;
+
+CREATE TABLE public.enviousos
+(
+  id integer NOT NULL DEFAULT nextval('enviousos_id_seq'::regclass),
+  ccentro character varying,
+  fecha date,
+  clave integer,
+  envio numeric,
+  recepcion numeric,
+  CONSTRAINT enviousuos_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.enviousos
+  OWNER TO postgres;
