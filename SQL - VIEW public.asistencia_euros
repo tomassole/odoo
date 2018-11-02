@@ -1,0 +1,410 @@
+-- View: public.asistencia_euros
+
+-- DROP VIEW public.asistencia_euros;
+
+CREATE OR REPLACE VIEW public.asistencia_euros AS 
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '01'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia1 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '02'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia2 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '03'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia3 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '04'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia4 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '05'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia5 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '06'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia6 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '07'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia7 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '08'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia8 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '09'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia9 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '10'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia10 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '11'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia11 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '12'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia12 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '13'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia13 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '14'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia14 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '15'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia15 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '16'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia16 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '17'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia17 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '18'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia18 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '19'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia19 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '20'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia20 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '21'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia21 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '22'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia22 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '23'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia23 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '24'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia24 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '25'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia25 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '26'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia26 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '27'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia27 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '28'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia28 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '29'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia29 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '30'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia30 = 1
+UNION
+ SELECT t1.id,
+    t1.school_id,
+    t2.x_ise_nie,
+    to_date((((t1.year::text || '-'::text) || t1.month::text) || '-'::text) || '31'::text, 'YYYY-MM-DD'::text) AS fecha,
+    4.5 AS euros,
+    t2.x_ise_nie AS nie,
+    t2.x_ise_estado,
+    t2.name AS nombre
+   FROM scat_student t1,
+    res_partner t2,
+    scat_school t3
+  WHERE t1.student_id = t2.id AND t1.school_id = t3.id AND t1.dia31 = 1;
+
+ALTER TABLE public.asistencia_euros
+  OWNER TO postgres;
