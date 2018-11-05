@@ -10,3 +10,32 @@ select t2.id, t2.create_date,t2.operation, t1.body,t1.message_type
 		scat_school_ise_integration as t2
              where t1.res_id = t2.id 
 		   and model = 'scat.school.ise.integration'
+
+select t2.id, t2.create_date,t2.operation, t1.body,t1.message_type 
+	from mail_message as t1,
+		scat_school_ise_integration as t2
+             where (t1.res_id = t2.id 
+		   and model = 'scat.school.ise.integration')
+		   and t1.body like '%actualizado la bonificación para el niño%'
+		   and t1.res_id >= 171
+		   order by body
+
+
+select distinct t1.body
+	from mail_message as t1,
+		scat_school_ise_integration as t2
+             where (t1.res_id = t2.id 
+		   and model = 'scat.school.ise.integration')
+		   and t1.body like '%actualizado la bonificación para el niño%'
+		   and t1.res_id >= 171
+		   order by body		   
+
+
+select distinct t1.body
+	from mail_message as t1,
+		scat_school_ise_integration as t2
+             where (t1.res_id = t2.id 
+		   and model = 'scat.school.ise.integration')
+		   and t1.body like '%Bonificación 100%'
+		   and t1.res_id >= 171
+		   order by body		   		   
