@@ -5,7 +5,7 @@
                     <field name="number"/>
                     <field name="commercial_partner_id" invisible="1"/>
                     <field name="reference" invisible="1"/>
-                    <field name="name" invisible="1"/>
+                    <field name="name"/>
                     <field name="journal_id" invisible="1"/>
                     <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
                     <field name="user_id"/>
