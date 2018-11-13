@@ -1,0 +1,45 @@
+-- Proceso para eliminar facturas que han sido validadas
+-- Una factura en el momento que se valida se crea el apunte,
+-- Utilizando el cambio masivo podemos ponerla en modo borrador,
+-- y proceder al borrado.
+-- Este proceso no elimina el asiento contable, exclusivamente 
+-- en la tabla account_move_line la columna invoice_id se pone
+-- a null, al eliminar desde el interfaz la factura.
+-- no se tiene en cuenta el movimiento de almacen, albaranes, pedidos.
+
+-- 
+-- tabla de lineas detalle de factura
+--
+select * from account_move_line 
+	where company_id=4 and -- empresa 4 = CS
+	      create_uid=6 and
+	      journal_id=57 and
+	      date = '2018-11-07'and
+	      invoice_id isnull and
+	      move_id=205946 limit 10
+
+delete from account_move_line 
+	where company_id=4 and -- empresa 4 = CS
+	      create_uid=6 and -- usuario
+	      journal_id=57 and -- diario
+	      date = '2018-11-07'and -- fecha factura.
+	      invoice_id isnull and
+	      move_id=205946
+-- 
+-- tabla de cabecera de factura
+--	      
+
+select * from account_move 
+	where company_id=4 and -- empresa 4 = CS
+	create_uid=6 and -- usuario 
+	journal_id=57 and -- diario
+	date = '2018-11-07'and -- fecha factura
+	ref like '%28940%' -- numero de factura
+	limit 10
+
+delete from account_move 
+	where company_id=4 and -- empresa 4 = CS
+	create_uid=6 and -- usuario 
+	journal_id=57 and -- diario
+	date = '2018-11-07'and -- fecha factura
+	ref like '%28940%' -- numero de factura	
