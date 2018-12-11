@@ -1,0 +1,8 @@
+--
+ -- Obtención de email y nombre para un mass email de una orden de cobro
+ --
+ select t1.email, t1.display_name from res_partner t1,
+		account_payment_line t2
+		where t2.order_id in (459,119 ) and
+		t1.id=t2.partner_id
+		order by t2.communication
