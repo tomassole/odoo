@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<tree string="Account Journal">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="type"/>
+                    <field name="belongs_to_company" invisible="1"/>
+                    <field name="invoice_sequence_id"/>
+                    <field name="refund_inv_sequence_id"/>
+                    <field name="sequence_id"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                </tree>
+            
