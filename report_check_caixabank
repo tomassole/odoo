@@ -10,7 +10,10 @@
                             <div t-if="o.partner_id.vat" class="mt16">TIN: <span t-field="o.partner_id.vat"/></div>
                         </div>
                         <div style="position:absolute; top:50mm; left:10mm;">
-                            <strong>
+                            <div>
+                                <span t-esc="'Emisor: {}'.format(o.company_id.name)"/>
+                             </div>
+                             <strong>
                                 <span t-esc="'Partner: {}'.format(o.partner_id.name)"/>
                                 <span style="padding-right:130mm;float:right;" t-esc="'Fecha: {}'.format(datetime.datetime.now())"/>
                                 <span style="position:absolute; right:35mm;" t-esc="'Nº Cheque: {}'.format(o.check_number)"/>
