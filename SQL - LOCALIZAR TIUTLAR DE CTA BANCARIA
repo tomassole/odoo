@@ -1,0 +1,6 @@
+
+select t2.*, t1.sanitized_acc_number  
+	from 	res_partner_bank as t1,
+		res_partner as t2
+		where t1.partner_id = t2.id and
+		sanitized_acc_number like '%3959'
