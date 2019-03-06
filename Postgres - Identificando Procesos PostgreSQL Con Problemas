@@ -1,0 +1,114 @@
+Identificando Procesos PostgreSQL Con Problemas
+https://e-mc2.net/es/identificando-procesos-postgresql-con-problemas
+
+Un administrador de bases de datos no siempre tiene acceso ó conoce la aplicación que está accediendo a la base datos que administra. En muchos casos habrá que ayudar a los desarrolladores ó encargados de la aplicación a resolver los problemas que surjan.
+
+En este artículo vamos a ver como identificar procesos, tanto en el servidor como en los clientes, que están accediendo a nuestra base datos. El saber identificar los procesos involucrados en una operación nos puede ayudar mucho en situaciones especiales en las que ciertas operaciones ó conexiones tengan ó sean causantes de problemas.
+
+Vamos a dar un ejemplo de como hacer esto con un típico caso que os podeis encontrar en cualquier momento. Este caso es el de una transacción activa que haya bloqueado una parte de la base de datos y que por alguna causa ó problema en el cliente no anule el bloqueo y/ó no acabe la transacción. En este particular caso, todos los procesos que intenten acceder a los datos protegidos por el bloqueo, serán bloqueados y tendrán que esperar a su anulación antes de poder seguir trabajando. En la práctica, tendremos procesos que tardan mucho en terminar ó que nuncan terminan. Si son operaciones usuales y que se repitan a menudo la lista de procesos en espera puede crecer rápidamente.
+
+Para resolver esta situación tenemos que identificar los procesos involucrados lo más rápidamente posible. En nuestro ejemplo vamos a tener 2 procesos accediendo a la base de datos, uno de ellos ejecutará un SELECT FOR UPDATE en una tabla y el otro intentará modificar datos protegidos por el bloqueo creado por el otro proceso. En nuestro ejemplo estamos de suerte, solamente tendremos un proceso con una transacción abierta y otro esperando. En la realidad tendremos seguramente multiples procesos en esta situación.
+
+Los puntos a seguir serán:
+
+Intentar identificar via el sistema operativo los procesos postgres de interes en el servidor, en nuestro caso los que están bloqueando el acceso y los que estén esperando.
+Para ello podemos ejecutar este comando para obtener los posibles candidatos a estar bloqueando:
+
+[root@server]#> ps ax | grep "postgres:" | grep "idle in transaction"
+21954 ?   Ss  0:00 postgres: postgres test001 129.240.10.210(49417) idle in transaction  
+Y este para los que estén esperando:
+
+[root@server]#> ps ax | grep "postgres:" | grep "waiting"
+13836 ?    Ss   0:00 postgres: postgres test001 129.240.10.210(49745) UPDATE waiting   
+Una vez que tengamos información sobre los posibles procesos involucrados en el problema, usaremos PSQL para verificar y obtener mas información. Vamos a utilizar la información en los catalogos de sistema pg_stat_activity, pg_locks y pg_class.
+Primero vamos a verificar la información contenida en pg_stat_activity sobre estos dos procesos, 21954 y 13836. La información la ordenaremos por el atributo query_start para tener los procesos ordenados cronológicamente.
+
+[server:5432/postgres@test001][]# \x
+Expanded display is on.
+
+[server:5432/postgres@test001][]# SELECT datid, 
+datname, 
+procpid, 
+usename, 
+current_query, 
+waiting,
+xact_start,
+query_start,
+client_addr,
+client_port 
+FROM pg_stat_activity 
+WHERE procpid IN (21954,13836) 
+ORDER BY query_start;
+
+-[ RECORD 1 ]-+--------------------------------------------
+datid         | 16774
+datname       | test001
+procpid       | 21954
+usename       | postgres
+current_query |  in transaction
+waiting       | f
+xact_start    | 2009-04-30 14:20:27.860236+02
+query_start   | 2009-04-30 14:20:41.300738+02
+client_addr   | 129.240.10.210
+client_port   | 49417
+-[ RECORD 2 ]-+--------------------------------------------
+datid         | 16774
+datname       | test001
+procpid       | 13836
+usename       | postgres
+current_query | UPDATE tellers SET bid = 100 where tid = 1;
+waiting       | t
+xact_start    | 2009-04-30 14:21:34.370305+02
+query_start   | 2009-04-30 14:21:45.243395+02
+client_addr   | 129.240.10.210
+client_port   | 49745
+Podemos confirmar que los dos procesos están accediendo la misma base de datos y que 21954 empezo antes que 13836. Los datos contenidos en client_addr y client_port nos servirán más tarde para averiguar que proceso en la maquina cliente 129.240.10.210 (49417) está usando el proceso 21954 en nuestro servidor.
+
+A continuación podemos obtener los datos que nos proporciona pg_locks para confirmar los bloqueos generados por estos dos procesos.
+
+[server:5432/postgres@test001][]# SELECT pg_class.relname, 
+pg_locks.mode,
+substr(pg_stat_activity.current_query,1,30), 
+age(now(),pg_stat_activity.query_start) as "age", 
+pg_stat_activity.procpid 
+FROM pg_stat_activity,pg_locks 
+LEFT OUTER JOIN pg_class ON (pg_locks.relation = pg_class.oid)  
+WHERE pg_locks.pid=pg_stat_activity.procpid 
+AND pg_stat_activity.datname = 'test001' 
+AND pg_stat_activity.procpid in (21954,13836) 
+ORDER BY age DESC;
+
+   relname    |       mode       |             substr             |       age       | procpid 
+--------------+------------------+--------------------------------+-----------------+---------
+ tellers_pkey | AccessShareLock  |  in transaction          | 01:06:41.260819 |   21954
+              | ExclusiveLock    |  in transaction          | 01:06:41.260819 |   21954
+              | ExclusiveLock    |  in transaction          | 01:06:41.260819 |   21954
+ tellers      | RowShareLock     |  in transaction          | 01:06:41.260819 |   21954
+              | ShareLock        | UPDATE tellers SET bid = 100 w | 01:05:37.318162 |   13836
+              | ExclusiveLock    | UPDATE tellers SET bid = 100 w | 01:05:37.318162 |   13836
+ tellers      | ExclusiveLock    | UPDATE tellers SET bid = 100 w | 01:05:37.318162 |   13836
+ tellers_pkey | RowExclusiveLock | UPDATE tellers SET bid = 100 w | 01:05:37.318162 |   13836
+              | ExclusiveLock    | UPDATE tellers SET bid = 100 w | 01:05:37.318162 |   13836
+ tellers      | RowExclusiveLock | UPDATE tellers SET bid = 100 w | 01:05:37.318162 |   13836
+(10 rows)
+En está información podemos corroborar que el primer proceso en la lista (21954) con una transaccion abierta y sin actividad tiene definido un bloqueo "RowShareLock" en la tabla "tellers" (este tipo de bloqueo es el usado cuando ejecutamos SELECT FOR UPDATE).
+
+El tipo de bloqueo "RowShareLock", bloquea entre otros, a cualquier operación que necesite un bloqueo del tipo "ExclusiveLock" (como el UPDATE de nuestro proceso 13836)
+
+Una vez que hemos verificado que el proceso 21954 es el causante de todos nuestros problemas tenemos que hacer algo con el mismo. Una manera de arreglar el problema seria matar al proceso desde la linea de comandos en el servidor. A mi personalmente, esta manera de proceder no me gusta y no me parece adecuada, deberia de usarse solamente como un último recurso y siempre estando de acuerdo con los encargados de la aplicación.
+Lo que yo aconsejo hacer es encontrar el proceso en la maquina cliente que está utilizando el proceso 21954 en el servidor y arreglarlo ó matarlo.
+
+Para encontrar el proceso cliente causante del problema utilizamos la IP y el puerto remoto usado por 21954 (129.240.10.210 : 49417)
+Nos conectamos a 129.240.10.210 y ejecutamos un par de comandos que nos diran el proceso que buscamos.
+
+[root@server ~]$ ssh root@129.240.10.210
+[root@129.240.10.210 ~]$ netstat -pn |grep 129.240.10.210 |grep 49417
+tcp      0    0 129.240.10.210:49417        129.240.255.222:5432   ESTABLISHED 24509/psql 
+En la linea obtenida podemos ver al final el numero local del proceso que buscamos (24509/psql)
+
+[root@129.240.10.210 ~]$ ps axu |grep psql | grep 24509
+postgres 24509  0.0  0.0 77288 3144 pts/1    S+   13:53   0:00 psql -h server test001
+Lo único que nos queda hacer es contactar con el encargado de este proceso para que arregle la situación ó matarlo controladamente para solucionar todos los problemas en nuestra base de datos. En muchos casos estamos hablando de scripts ó programas que se han colgado y la única manera de arreglarlos es matandolos.
+[root@129.240.10.210 ~]$ kill 24509
+De vuelta en el servidor de base de datos podemos comprobar que todos los procesos con problemas de bloqueos han desaparecido despues de matar al causante del bloqueo.
+
