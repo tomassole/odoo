@@ -3,11 +3,13 @@ SELECT
   account_payment_line.partner_bank_id, 
   account_payment_line.communication, 
   account_payment_line.name, 
-  account_banking_mandate.state
+  account_banking_mandate.state,
+  account_banking_mandate.unique_mandate_reference
 FROM 
   public.account_payment_line, 
   public.account_banking_mandate
 WHERE 
   account_payment_line.mandate_id = account_banking_mandate.id AND
-  account_payment_line.order_id = 360 AND
+  account_payment_line.order_id = 990 AND
   account_banking_mandate.state <> 'valid';
+
