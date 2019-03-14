@@ -1,0 +1,34 @@
+
+-- Infome facturas conciliadas
+SELECT T2.name, T2.ref
+
+FROM 
+	account_payment_line T1,
+	account_move_line T2,
+	res_partner T3
+
+WHERE
+	(T1.move_line_id = T2.id and
+	T2.partner_id = T3.id ) AND
+	T2.reconciled = TRUE AND
+	T1.order_id IN (1010)
+ORDER BY T2.name
+
+
+-- Infome de mandatos caducados
+SELECT T2.name, T2.ref, t4.unique_mandate_reference, t1.order_id
+
+FROM 
+	account_payment_line T1,
+	account_move_line T2,
+	res_partner T3,
+	account_banking_mandate T4	
+
+WHERE
+	(T1.move_line_id = T2.id and
+	T2.partner_id = T3.id aND
+	T4.id = t1.mandate_id ) AND
+	T4.state = 'cancel' AND
+	T1.order_id IN (990,1004,1006,1010,1039)
+ORDER BY t1.order_id
+
