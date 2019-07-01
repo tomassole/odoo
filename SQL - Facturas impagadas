@@ -1,0 +1,14 @@
+select t1.id,t1.date_invoice, t1.invoice_number,t1.name, t1.amount_total_signed, t1.residual_signed,t1.partner_id,t1.commercial_partner_id, T2.discount, t3.x_ise_nie, t4.x_ise_nie
+	from account_invoice t1, -- LISTADO DE FACTURAS CABECERAS
+		(select invoice_id,  mAX(discount) AS discount
+			from account_invoice_line -- FACTURAS LINEAS DETALLE
+				group by invoice_id ) t2, -- RECUPERO UNA UNICA LINEA DE DETALLE PARA OBTENER LA BONIFICACIÓN
+		res_partner t3, -- PADRE
+		res_partner t4  -- COMENSAL
+	where   (t1.state <> 'paid' and
+		t1.sii_description = 'PR_ClIENTES | Menu ISE (Servicio comedor) - Menu ISE (Guardia y custodia)' and -- PARA LOCALIZAR EXCLUSIVAMENTE COMENSALES.
+	--	 t1.type = 'out invoice' and
+		t1.company_id =1 ) and -- EMPRESA 1--> PR
+		t1.commercial_partner_id = t3.id and
+		t1.partner_id = t4.id and
+		t2.invoice_id = t1.id
