@@ -1,0 +1,6 @@
+-- ORDEN DE PAGO: Error: al confirmar el fichero SEPA: Error de titular.
+select t1.partner_id, t2.partner_id, t1.* 
+	from account_payment_line t1, 
+		account_move_line t2
+	where order_id=1296 and   -- indicar ID DE LA ORDEN DE PAGO.
+	      t2.id = t1.move_line_id
