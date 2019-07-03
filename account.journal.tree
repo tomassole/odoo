@@ -4,6 +4,7 @@
                     <field name="name"/>
                     <field name="type"/>
                     <field name="belongs_to_company" invisible="1"/>
+                    <field name="code"/>
                     <field name="invoice_sequence_id"/>
                     <field name="refund_inv_sequence_id"/>
                     <field name="sequence_id"/>
