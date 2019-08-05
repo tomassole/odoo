@@ -1,6 +1,6 @@
 
 -- Infome facturas conciliadas
-SELECT T2.name, T2.ref
+SELECT T1.order_id,T2.name, T2.ref
 
 FROM 
 	account_payment_line T1,
@@ -12,7 +12,7 @@ WHERE
 	T2.partner_id = T3.id ) AND
 	T2.reconciled = TRUE AND
 	T1.order_id IN (1010)
-ORDER BY T2.name
+ORDER BY T1.order_id, T2.name
 
 
 -- Infome de mandatos caducados
