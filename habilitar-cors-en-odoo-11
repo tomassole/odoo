@@ -1,0 +1,68 @@
+https://es.stackoverflow.com/questions/229109/habilitar-cors-en-odoo-11
+
+Intento habilitar en odoo 11 el Intercambio de Recursos de Origen Cruzado, CORS por sus siglas en ingles ( Cross-Origin Resource Sharing). He visto algunos articulos referente al tema pero no he logrado dar con la respuesta correcta.
+Se envia una solicitud hacia el api de odoo desde una aplicacion desarrollada con Angular 7.
+Segun la explicacion dada en el articulo
+
+https://www.odoo.com/es_ES/forum/ayuda-1/question/avoid-cors-error-webapp-cordova-99048
+
+para habilitar el CORS en Odoo se debe editar la funcion wsgi_xmlrpc() que se encuentra en el fichero wsgi_server.py
+def wsgi_xmlrpc(environ, start_response):
+    if environ['REQUEST_METHOD'] == "OPTIONS":
+        response = werkzeug.wrappers.Response('OPTIONS METHOD DETECTED') 
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+        response.headers['Access-Control-Max-Age'] = 1000
+
+# note that '*' is not valid for Access-Control-Allow-Headers
+
+response.headers['Access-Control-Allow-Headers'] = 'origin, x-csrftoken, content-type, accept'
+        return response(environ, start_response)
+
+if environ['REQUEST_METHOD'] == 'POST' and environ['PATH_INFO'].startswith('/xmlrpc/'):
+        length = int(environ['CONTENT_LENGTH'])
+        data = environ['wsgi.input'].read(length)
+
+  # Distinguish betweed the 2 faultCode modes
+
+        string_faultcode = True
+        if environ['PATH_INFO'].startswith('/xmlrpc/2/'):
+            service = environ['PATH_INFO'][len('/xmlrpc/2/'):]
+            string_faultcode = False
+        else:
+            service = environ['PATH_INFO'][len('/xmlrpc/'):]
+        params, method = xmlrpclib.loads(data)
+        return xmlrpc_return(start_response, service, method, params, string_faultcode)
+
+En environ['PATH_INFO'] no va a venir la secuencia '/xmlrpc/', por lo que nunca va a entrar al fragmento de codigo encapsulado en => if environ['REQUEST_METHOD'] == 'POST' and environ['PATH_INFO'].startswith('/xmlrpc/'):
+
+Por lo tanto se ejecuta el fragmento:
+
+if environ['REQUEST_METHOD'] in ['POST', 'HEAD', 'OPTIONS']:
+
+        response = werkzeug.wrappers.Response(str(environ['REQUEST_METHOD'])+' METHOD DETECTED')
+
+        response.headers['Access-Control-Allow-Origin'] = '*'
+
+        response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+
+        response.headers['Access-Control-Max-Age'] = 1000
+
+        # note that '*' is not valid for Access-Control-Allow-Headers
+
+        response.headers['Access-Control-Allow-Headers'] = 'origin, x-csrftoken, content-type, accept'
+
+
+        return response(environ, start_response)
+El Response devuelve codigo 200 y en las cabeceras de dicha respuesta se encuentra las definidas anteriormente. Sin embargo en la consola del navegador en modo desarrollo muestra lo siguiente:
+
+Solicitud desde otro origen bloqueada: la política de mismo origen impide leer el recurso remoto en https://fonts.gstatic.com/s/materialicons/v42/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2 (razón: la cabecera CORS 'Access-Control-Allow-Origin' no coincide con 'https://angular.io').
+
+Alguna idea?
+
+¿Te marca algún error, y si es así, que te arroja la consola? ¿Que llevas hecho? – Fernando Carraro el 11 ene. a las 21:26
+Lo mas cercano que encontre fue esto: odoo.com/es_ES/forum/ayuda-1/question/… . Pero cuando lo implemento y ejecuto en la consola del navegador menciona que no se tiene permiso pues el en cabezado Access-Control-Allow-Origin no esta habilitado. – Peter Paul el 11 ene. a las 21:56
+Sería bueno que colocaras código para entender mejor tu problema. – Fernando Carraro el 11 ene. a las 22:21
+@FernandoCarraro extendi la explicacion en la pregunta – Peter Paul el 15 ene. a las 14:52
+Muchas veces el problema es del lado de la aplicación servidor y no permita que te conectes a algún servicio por cuestiones de seguridad. Según lo que entiendo, tienes una aplicación en Odoo (que usa Python) y quieres acceder a un servicio de una aplicación Angular 7. – Fernando Carraro el 16 ene. a las 18:31
+añade un comentario
