@@ -1,12 +1,14 @@
--- SCRIPT DE BORRADO DE DUPLICADOS DE UNIDADES DE MEDIDA&#13;
-SELECT * FROM product_uom WHERE active=false order by name	&#13;
-&#13;
-DELETE FROM product_uom WHERE ID IN (364);&#13;
-UPDATE &quot;purchase_order_line&quot; SET &quot;product_uom&quot; = 1 WHERE &quot;product_uom&quot; IN (364);&#13;
-UPDATE &quot;mrp_bom&quot; SET &quot;product_uom_id&quot; = 1 WHERE &quot;product_uom_id&quot; IN  (364);&#13;
-UPDATE &quot;product_template&quot; SET &quot;uom_id&quot; = 1 WHERE &quot;uom_id&quot; IN  (364);&#13;
-UPDATE &quot;product_template&quot; SET &quot;uom_po_id&quot; = 1 WHERE &quot;uom_po_id&quot; IN  (364);&#13;
-UPDATE &quot;stock_move&quot; SET &quot;product_uom&quot; = 1 WHERE &quot;product_uom&quot; IN  (364);&#13;
-UPDATE &quot;sale_order_line&quot; SET &quot;product_uom&quot; = 1 WHERE &quot;product_uom&quot; IN  (364);&#13;
-&#13;
--- FINAL SCRIPT DE BORRADO DE DUPLICADOS DE UNIDADES DE MEDIDA.&#13;
+-- SCRIPT DE BORRADO DE DUPLICADOS DE UNIDADES DE MEDIDA;
+SELECT * FROM product_uom WHERE active=false order by name;
+
+UPDATE purchase_order_line SET product_uom = 1 WHERE product_uom IN (395);
+UPDATE mrp_bom SET product_uom_id = 1 WHERE product_uom_id IN  (395);
+UPDATE product_template SET uom_id = 1 WHERE uom_id IN  (395);
+UPDATE product_template SET uom_po_id = 1 WHERE uom_po_id IN  (395);
+UPDATE stock_move SET product_uom = 1 WHERE product_uom IN  (395);
+UPDATE sale_order_line SET product_uom = 1 WHERE product_uom IN  (395);
+UPDATE procurement_order SET "product_uom" = 1 WHERE "product_uom" IN (395);
+UPDATE stock_inventory_line SET "product_uom_id" = 1 WHERE "product_uom_id" IN (395);
+DELETE FROM product_uom WHERE ID IN (395);
+
+-- FINAL SCRIPT DE BORRADO DE DUPLICADOS DE UNIDADES DE MEDIDA.
