@@ -1,0 +1,108 @@
+
+select * from pg_stat_activity o
+
+
+ps aux |grep postgres
+
+Mostrar las consultas en ejecución
+SELECT procpid, age(query_start, clock_timestamp()), usename, current_query 
+FROM pg_stat_activity 
+WHERE current_query != '<IDLE>' AND current_query NOT ILIKE '%pg_stat_activity%' 
+ORDER BY query_start desc;
+
+
+Historial de comandos SQL
+more ~/.psql_history
+
+Crear usuarios
+Desde la línea de comandos con el usuario postgres:
+createuser nombreusuario 
+
+Modificar permisos
+Para modificar los permisos del usuario PostgreSQL (v9.0 y posteriores ya no pregunta nada al ejecutar createuser desde la línea de comandos), dentro de psql:
+ALTER USER nombreusuario NOSUPERUSER CREATEDB;
+
+Modificar su password dentro de psql:
+alter role nombre_usuario with password 'password';
+
+Cambiar el dueño a los objetos de la base de datos y a la propia base de datos
+1.-Cambiar el OWNER de la base de datos:
+ALTER DATABASE $BASEDEDATOS OWNER TO $USER;
+
+2.- Cambiar el owner a los objetos de la base de datos (conectarse antes a la base de datos con psql -d BASE_DE_DATOS):
+UPDATE pg_class SET relowner = (SELECT oid FROM pg_roles WHERE rolname = '$USER') 
+WHERE relname IN (SELECT relname FROM pg_class, pg_namespace 
+WHERE pg_namespace.oid = pg_class.relnamespace AND pg_namespace.nspname = 'public');
+
+ 
+Donde se cambia $USER por el nombre del usuario a quien se le asignará como dueño de esta base de datos.
+Terminar procesos en una base de datos.
+PostgreSQL 9.2:
+
+    SELECT pg_terminate_backend(pg_stat_activity.pid)
+    FROM pg_stat_activity
+    WHERE pg_stat_activity.datname = 'target_db'
+      AND pid <> pg_backend_pid();
+
+PostgreSQL 9.1 y anteriores:
+
+    SELECT pg_terminate_backend(pg_stat_activity.procpid)
+    FROM pg_stat_activity
+    WHERE pg_stat_activity.datname = 'target_db'
+      AND procpid <> pg_backend_pid();
+
+
+Mostrar las consultas en ejecución (posterior ver. 9.2)
+SELECT pid, age(query_start, clock_timestamp()), usename, query 
+FROM pg_stat_activity 
+WHERE query != '<IDLE>' AND query NOT ILIKE '%pg_stat_activity%' 
+ORDER BY query_start desc;
+
+Mostrar las consultas en ejecución (antes de ver. 9.2)
+SELECT procpid, age(query_start, clock_timestamp()), usename, current_query 
+FROM pg_stat_activity 
+WHERE current_query != '<IDLE>' AND current_query NOT ILIKE '%pg_stat_activity%' 
+ORDER BY query_start desc;
+
+Matar consulta en ejecución
+SELECT pg_cancel_backend(procpid);
+
+Matar consulta inactiva
+SELECT pg_terminate_backend(procpid);
+
+Comando VACUUM
+VACUUM (VERBOSE, ANALYZE);
+
+Todos los usuarios de bases de datos
+select * from pg_stat_activity where current_query not like '
+
+Todas las bases de datos y sus tamaño
+select * from pg_user;
+
+
+Todas las tablas y su tamaño, con / sin índices
+select datname, pg_size_pretty(pg_database_size(datname))
+from pg_database order by pg_database_size(datname) desc;
+
+
+Las tasas de éxito de caché (no debe ser inferior a 0,99)
+SELECT sum(heap_blks_read) as heap_read, sum(heap_blks_hit)  as heap_hit, (sum(heap_blks_hit) - sum(heap_blks_read)) / sum(heap_blks_hit) as ratio FROM pg_statio_user_tables;
+
+Tabla de tasas de utilización del índice  (no debe ser inferior a 0,99)
+SELECT relname, 100 * idx_scan / (seq_scan + idx_scan) percent_of_times_index_used, n_live_tup rows_in_table FROM pg_stat_user_tables 
+ORDER BY n_live_tup DESC;
+
+Cuántos índices hay en caché
+SELECT sum(idx_blks_read) as idx_read, sum(idx_blks_hit)  as idx_hit, (sum(idx_blks_hit) - sum(idx_blks_read)) / sum(idx_blks_hit) as ratio FROM pg_statio_user_indexes;
+
+Volcar Base de datos en el host remoto a un archivo
+$ pg_dump -U username -h hostname databasename > dump.sql
+
+
+Importar el archivo de volcado en una base de datos existente
+$ psql -d newdb -f dump.sql
+
+Hacer una copia de una base de datos 
+CREATE DATABASE newdb WITH TEMPLATE originaldb OWNER dbuser;
+
+ 
