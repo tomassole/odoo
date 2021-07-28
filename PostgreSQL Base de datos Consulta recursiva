@@ -1,0 +1,38 @@
+ WITH RECURSIVE r AS (
+       SELECT f_orgid FROM orgWHERE f_orgid = 29
+     union   ALL
+       SELECT t1.f_orgid FROM org t1,r  WHERE  t1.f_parentorgid = r.f_orgid 
+     )
+select f_orgid from r
+
+
+NOTA: f_parentid es la identificación de los padres
+
+---
+---***
+---
+with RECURSIVE cte as
+(
+select a.module_id,cast(a.module_name as varchar(100)) from tb_sm_module a where module_id=0  
+union all 
+select k.module_id,cast(c.module_name||'>'||k.module_name as varchar(100)) as module_name  from tb_sm_module k inner join cte c on c.module_id = k.parent_id
+)select module_id,module_name from cte ;
+
+--Aquí hay una pregunta: ¿por qué el texto cambió el nombre de la jerarquía que se muestra más adelante a module_id, pero no funcionó? 
+
+- mira abajo
+WITH RECURSIVE T AS(
+		SELECCIONAR * DESDE TB_SM_MODULE T1 WHERE MODULE_ID = 1 - información original
+		UNION AL]L
+		SELECCIONE T2. * DESDE TB_SM_MODULE T2, T - información adicional
+		WHERE T2.PARENT_ID = T.MODULE_ID: información adicional como la información original del padre
+)SELECT * FROM T
+
+
+- buscar
+WITH RECURSIVE T AS(
+		SELECCIONAR * DESDE TB_SM_MODULE T1 WHERE MODULE_ID = 1053 - información original
+		UNION ALL
+		SELECCIONE T2. * DESDE TB_SM_MODULE T2, T - información adicional
+		WHERE T2.MODULE_ID = T.PARENT_ID: el padre de la información original es igual a la información adicional
+)SELECT * FROM T 
